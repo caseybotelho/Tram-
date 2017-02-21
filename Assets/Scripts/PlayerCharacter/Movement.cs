@@ -13,9 +13,10 @@ public class Movement : MonoBehaviour {
 
 	void Start () {
 		player = GetComponent<CharacterController> ();
-	}
+    }
 
 	void Update () {
+
 		float movX = Input.GetAxis ("Horizontal") * speed;
 		float movZ = Input.GetAxis ("Vertical") * speed;
 
@@ -25,6 +26,6 @@ public class Movement : MonoBehaviour {
 		mov *= Time.deltaTime;
 		mov = transform.TransformDirection (mov);
 
-		player.Move (mov);
-	}
+        player.Move (mov);
+    }
 }
