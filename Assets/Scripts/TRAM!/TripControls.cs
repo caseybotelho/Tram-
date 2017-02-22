@@ -23,8 +23,11 @@ public class TripControls : MonoBehaviour {
         RaycastHit hit;
         if (passenger == null) {
             if (Physics.SphereCast(ray, 2.0f, out hit)) {
-                passenger = hit.transform.gameObject;
-                StartCoroutine(BeginTrip());
+				passenger = hit.transform.GetChild(5).gameObject; // not best way to get playercharacter, but won't be able to solve until i figure out how to maintain movement with tram without making player object a child of the tram
+				Debug.Log (passenger);
+				if (passenger.GetComponent<DallasRex> ()) {
+					StartCoroutine (BeginTrip ());
+				}
             }
         }
         if (inProgress) { // tram movement
@@ -66,12 +69,12 @@ public class TripControls : MonoBehaviour {
     }
 
     private IEnumerator EndTrip() {
-        GameObject frontDoor = transform.GetChild(1).gameObject; // gets rear door and closes it
+        GameObject frontDoor = transform.GetChild(1).gameObject; // gets front door and opens it
         GateControlsEnd openGate = frontDoor.GetComponent<GateControlsEnd>();
         openGate.TripOver();
 
         yield return new WaitForSeconds(2.5f);
 
-        inProgress = true; // starts trip
+        inProgress = false; // ends trip
     }
 }
