@@ -20,6 +20,7 @@ public class GateControlsStart : MonoBehaviour {
             if (barrier == null) {
                 barrier = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 barrier.transform.localScale = new Vector3(4, 1, 0.5f);
+				barrier.layer = LayerMask.NameToLayer ("InvisibleWalls");
                 MeshRenderer mesh = barrier.GetComponent<MeshRenderer>();
                 Destroy(mesh);
             }

@@ -13,27 +13,31 @@ public class Enemy : MonoBehaviour {
 
 	public Types enemyType = Types.backAndForth; // default enemy type
 
-	private Rigidbody body; // used for mob enemyType
-	public float speed = 1.0f;
-	float maxDistance = 1.0f;
-    TripControls dallas;
-
 	public int points = 10; // points enemy is worth
 
+	// mob enemyType
+	private Rigidbody body;
+	public float speed = 1.0f; // default movement speed
+	float maxDistance = 1.0f; // distance from collider before turning
+	TripControls dallas; // stores tram if seen
+	bool noticed; // if player was noticed
+	int layer; // layermask for noticing only player
+
+	// backAndForth and upAndDown
 	public float distance = 20.0f; // max distance travelled
 	private Vector3 startPos; // start position of enemy
     public float time; // travel time
     private float maxTime = 2.0f;
-    int layer;
 
     bool alive; // is the enemy alive
 
-	void Start () { // initializing start and end positions
-		startPos = transform.position;
+	void Start () {
+		startPos = transform.position; // enemy's spawn point
 
         alive = true;
 
         layer = LayerMask.GetMask("Player");
+		noticed = false;
     }
 
 	void Update () {
@@ -72,14 +76,14 @@ public class Enemy : MonoBehaviour {
                 }
                 Ray ray = new Ray(transform.position, transform.forward);
                 RaycastHit tram;
-                if (Physics.SphereCast(ray, 0.75f, out tram, 100f, layer)) {
+                if (Physics.SphereCast(ray, 0.75f, out tram, 100f, layer)) { // raycast checking for tram/player
                     if (tram.transform.gameObject) {
                         GameObject hitObject = tram.transform.gameObject;
                         dallas = hitObject.GetComponent<TripControls>();
-                        if (dallas) {
+                        if (dallas) { // if player is spotted, look at
                             Vector3 playerPos = tram.transform.GetChild(5).position;
-                            Debug.Log(playerPos);
-                            transform.Rotate(0, 10 * Time.deltaTime, 0);
+                            transform.LookAt(playerPos);
+							StartCoroutine (Run ());
                         }
                     }
                 }
@@ -93,6 +97,9 @@ public class Enemy : MonoBehaviour {
                         }
                     }
                 }
+				if (noticed) {
+					transform.Translate (Random.Range(-0.01f, 0.01f), 0, speed * Time.deltaTime);
+				}
 			}
         } else {
 			transform.Translate(Random.Range(-15, 15) * Time.deltaTime, Random.Range(-15, 15) * Time.deltaTime, Random.Range(-15, 15) * Time.deltaTime); // movement on death
@@ -110,5 +117,14 @@ public class Enemy : MonoBehaviour {
         yield return new WaitForSeconds(2.0f);
 
         Destroy(this.gameObject);
-    }
+	}
+
+	private IEnumerator Run() { // run toward player
+
+		yield return new WaitForSeconds (2.0f);
+
+		speed = 10.0f;
+
+		noticed = true;
+	}
 }
