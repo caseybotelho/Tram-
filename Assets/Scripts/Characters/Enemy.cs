@@ -14,8 +14,9 @@ public class Enemy : MonoBehaviour {
 	public Types enemyType = Types.backAndForth; // default enemy type
 
 	private Rigidbody body; // used for mob enemyType
-	public float speed = 3.0f;
+	public float speed = 1.0f;
 	float maxDistance = 1.0f;
+    TripControls dallas;
 
 	public int points = 10; // points enemy is worth
 
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour {
 	private Vector3 startPos; // start position of enemy
     public float time; // travel time
     private float maxTime = 2.0f;
+    int layer;
 
     bool alive; // is the enemy alive
 
@@ -30,7 +32,9 @@ public class Enemy : MonoBehaviour {
 		startPos = transform.position;
 
         alive = true;
-	}
+
+        layer = LayerMask.GetMask("Player");
+    }
 
 	void Update () {
         if (alive) {
@@ -62,17 +66,33 @@ public class Enemy : MonoBehaviour {
 				transform.Rotate (0, rotSpeed, 0);
 			} else if (enemyType == Types.mob) { // enemy movement in a mob
 				if (body == null) {
-					FreezeRotation ();
-				}
-				transform.Translate (0, 0, speed * Time.deltaTime);
-				Ray ray = new Ray (transform.position, transform.forward);
-				RaycastHit hit;
-				if (Physics.Raycast(ray, out hit)) { // changes travel direction if obstacle is in the way
-					if (hit.distance < maxDistance) {
-						float angle = Random.Range (-110, 110);
-						transform.Rotate (0, angle, 0);
-					}
-				}
+                    gameObject.AddComponent<Rigidbody>();
+                    body = GetComponent<Rigidbody>();
+                    body.freezeRotation = true;
+                }
+                Ray ray = new Ray(transform.position, transform.forward);
+                RaycastHit tram;
+                if (Physics.SphereCast(ray, 0.75f, out tram, 100f, layer)) {
+                    if (tram.transform.gameObject) {
+                        GameObject hitObject = tram.transform.gameObject;
+                        dallas = hitObject.GetComponent<TripControls>();
+                        if (dallas) {
+                            Vector3 playerPos = tram.transform.GetChild(5).position;
+                            Debug.Log(playerPos);
+                            transform.Rotate(0, 10 * Time.deltaTime, 0);
+                        }
+                    }
+                }
+                if (dallas == null) {
+				    transform.Translate (0, 0, speed * Time.deltaTime);
+				    RaycastHit wall;
+                    if (Physics.SphereCast(ray, 0.75f, out wall)) { // changes travel direction if obstacle is in the way
+                        if (wall.distance < maxDistance) {
+                            float angle = Random.Range(-110, 110);
+                            transform.Rotate(0, angle, 0);
+                        }
+                    }
+                }
 			}
         } else {
 			transform.Translate(Random.Range(-15, 15) * Time.deltaTime, Random.Range(-15, 15) * Time.deltaTime, Random.Range(-15, 15) * Time.deltaTime); // movement on death
@@ -83,13 +103,6 @@ public class Enemy : MonoBehaviour {
         alive = false;
         StartCoroutine(Die());
     }
-
-	void FreezeRotation() { // adds rigidbody to mob enemyType and freezes rotation
-		gameObject.AddComponent<Rigidbody> ();
-		body = GetComponent<Rigidbody> ();
-		body.freezeRotation = true;
-	}
-
 
     private IEnumerator Die() { // actions on death
         transform.Rotate(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
