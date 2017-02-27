@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Brake : MonoBehaviour {
 
-    private GameObject endPlatform;
+	private GameObject brakeParent;
+	private EndPlatform endPlatform;
 
     void Start() {
-        endPlatform = this.transform.parent.gameObject;
+        brakeParent = this.transform.parent.gameObject;
+		endPlatform = brakeParent.GetComponent<EndPlatform>();
     }
 
     void OnTriggerEnter(Collider other) {

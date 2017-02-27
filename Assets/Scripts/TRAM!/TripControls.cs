@@ -24,7 +24,6 @@ public class TripControls : MonoBehaviour {
         if (passenger == null) {
             if (Physics.SphereCast(ray, 2.0f, out hit)) {
 				passenger = hit.transform.GetChild(5).gameObject; // not best way to get playercharacter, but won't be able to solve until i figure out how to maintain movement with tram without making player object a child of the tram
-				Debug.Log (passenger);
 				if (passenger.GetComponent<DallasRex> ()) {
 					StartCoroutine (BeginTrip ());
 				}
