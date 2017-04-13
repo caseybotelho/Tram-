@@ -52,7 +52,7 @@ public class TripControls : MonoBehaviour {
 
         changeDirection = true;
 
-        yield return new WaitForSeconds(3.75f);
+        yield return new WaitForSeconds(1.85f);
 
         changeDirection = false;
     }
