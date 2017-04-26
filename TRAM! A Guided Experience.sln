@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAM! A Guided Experience", "TRAM! A Guided Experience.csproj", "{B6858C27-4795-A89F-6558-B17E6E80C2F6}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRAM! A Guided Experience", "Assembly-CSharp.csproj", "{44D9F637-AE5A-D1B3-293A-913110828719}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B6858C27-4795-A89F-6558-B17E6E80C2F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6858C27-4795-A89F-6558-B17E6E80C2F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6858C27-4795-A89F-6558-B17E6E80C2F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6858C27-4795-A89F-6558-B17E6E80C2F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44D9F637-AE5A-D1B3-293A-913110828719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44D9F637-AE5A-D1B3-293A-913110828719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44D9F637-AE5A-D1B3-293A-913110828719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44D9F637-AE5A-D1B3-293A-913110828719}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
