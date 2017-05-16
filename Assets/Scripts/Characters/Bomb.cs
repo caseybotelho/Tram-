@@ -6,13 +6,22 @@ public class Bomb : MonoBehaviour {
 
     public float speed = 20.0f;
 
+	public int points;
+
 	[SerializeField] private GameObject explosionPrefab;
 	private GameObject explosion;
+
+	[SerializeField] private GameObject gameController;
+	GameController gameScript;
         
 	void Start () {
 		Physics.IgnoreLayerCollision(10, 9 , true);
 
         StartCoroutine(Miss());
+
+		points = 0;
+
+		GameController gameScript = gameController.GetComponent<GameController>();
 	}
 
 	void Update () {
@@ -24,6 +33,8 @@ public class Bomb : MonoBehaviour {
         Enemy gaspTheEnemy = hitObject.GetComponent<Enemy>();
 		if (gaspTheEnemy) {
 			gaspTheEnemy.Killed ();
+			points = gaspTheEnemy.points;
+			gameScript.Points (points);
 		}
 
 		explosion = Instantiate (explosionPrefab) as GameObject;

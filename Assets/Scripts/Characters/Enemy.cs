@@ -5,15 +5,15 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
 	public enum Types { // different enemy types
-		backAndForth,
-		upAndDown,
-		orbiting,
-		mob
+		backAndForth = 10,
+		upAndDown = 10,
+		orbiting = 20,
+		mob = 1
 	}
 
 	public Types enemyType = Types.backAndForth; // default enemy type
 
-	public int points = 10; // points enemy is worth
+	public int points; // points enemy is worth
 
 	// mob enemyType
 	private Rigidbody body;
@@ -38,11 +38,16 @@ public class Enemy : MonoBehaviour {
 
         layer = LayerMask.GetMask("Player");
 		noticed = false;
+
+		points = 10;
     }
 
 	void Update () {
         if (alive) {
 			if (enemyType == Types.backAndForth) { // enemy in a back and forth pattern along z
+				if (points == 0) {
+					points = (int)Types.backAndForth;
+				}
 				Vector3 currentPos = transform.position;
 				transform.position = new Vector3 (currentPos.x, currentPos.y, Mathf.Lerp (startPos.z, startPos.z + distance, time)); // enemy movement
 
@@ -55,6 +60,9 @@ public class Enemy : MonoBehaviour {
 					transform.Rotate (0, 180, 0); // change direction on reaching max distance
 				}
 			} else if (enemyType == Types.upAndDown) { // enemy in up and down pattern along y
+				if (points == 0) {
+					points = (int)Types.upAndDown;
+				}
 				Vector3 currentPos = transform.position;
 				transform.position = new Vector3 (currentPos.x, Mathf.Lerp (startPos.y, startPos.y + distance, time), currentPos.z); // enemy movement
 
@@ -66,9 +74,15 @@ public class Enemy : MonoBehaviour {
 					time = 0.0f;
 				}
 			} else if (enemyType == Types.orbiting) { // enemy movement along sphere (enemy needs to be attached to rotating sphere)
+				if (points == 0) {
+					points = (int)Types.orbiting;
+				}
 				float rotSpeed = Random.Range (1.0f, 20.0f); 
 				transform.Rotate (0, rotSpeed, 0);
 			} else if (enemyType == Types.mob) { // enemy movement in a mob
+				if (points == 0) {
+					points = (int)Types.mob;
+				}
 				if (body == null) {
                     gameObject.AddComponent<Rigidbody>();
                     body = GetComponent<Rigidbody>();
