@@ -5,10 +5,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
 	public enum Types { // different enemy types
-		backAndForth = 10,
-		upAndDown = 10,
-		orbiting = 20,
-		mob = 1
+		backAndForth,
+		upAndDown,
+		orbiting,
+		mob
 	}
 
 	public Types enemyType = Types.backAndForth; // default enemy type
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour {
         if (alive) {
 			if (enemyType == Types.backAndForth) { // enemy in a back and forth pattern along z
 				if (points == 0) {
-					points = (int)Types.backAndForth;
+					points = 10;
 				}
 				Vector3 currentPos = transform.position;
 				transform.position = new Vector3 (currentPos.x, currentPos.y, Mathf.Lerp (startPos.z, startPos.z + distance, time)); // enemy movement
@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour {
 				}
 			} else if (enemyType == Types.upAndDown) { // enemy in up and down pattern along y
 				if (points == 0) {
-					points = (int)Types.upAndDown;
+					points = 10;
 				}
 				Vector3 currentPos = transform.position;
 				transform.position = new Vector3 (currentPos.x, Mathf.Lerp (startPos.y, startPos.y + distance, time), currentPos.z); // enemy movement
@@ -75,13 +75,13 @@ public class Enemy : MonoBehaviour {
 				}
 			} else if (enemyType == Types.orbiting) { // enemy movement along sphere (enemy needs to be attached to rotating sphere)
 				if (points == 0) {
-					points = (int)Types.orbiting;
+					points = 20;
 				}
 				float rotSpeed = Random.Range (1.0f, 20.0f); 
 				transform.Rotate (0, rotSpeed, 0);
 			} else if (enemyType == Types.mob) { // enemy movement in a mob
 				if (points == 0) {
-					points = (int)Types.mob;
+					points = 1;
 				}
 				if (body == null) {
                     gameObject.AddComponent<Rigidbody>();
